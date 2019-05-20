@@ -19,19 +19,21 @@ class App extends React.Component {
 
 	onFormSubmit = e => {
 		e.preventDefault();
-		this.setState({
-			todos: [
-				...this.state.todos,
-				{
-					title: this.state.newTodo,
-					done: false,
-				},
-			],
-		});
+		if (this.state.newTodo) {
+			this.setState({
+				todos: [
+					...this.state.todos,
+					{
+						title: this.state.newTodo,
+						done: false,
+					},
+				],
+			});
 
-		this.setState({
-			newTodo: '',
-		});
+			this.setState({
+				newTodo: '',
+			});
+		}
 	};
 
 	onInputChange = e => {
