@@ -1,26 +1,82 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Form from './components/Form';
+import TodoList from './components/TodoList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			newTodo: '',
+			todos: [
+				{
+					title: 'Learn State',
+					done: false,
+				},
+			],
+		};
+	}
+
+	onFormSubmit = e => {
+		e.preventDefault();
+		this.setState({
+			todos: [
+				...this.state.todos,
+				{
+					title: this.state.newTodo,
+					done: false,
+				},
+			],
+		});
+
+		this.setState({
+			newTodo: '',
+		});
+	};
+
+	onInputChange = e => {
+		this.setState({
+			newTodo: e.target.value,
+		});
+	};
+
+	onChechboxChange = (e, index) => {
+		const todos = [...this.state.todos];
+		todos[index] = { ...todos[index] };
+		todos[index].done = e.target.checked;
+
+		this.setState({
+			todos,
+		});
+	};
+
+	onRemoveClick = index => {
+		const todos = [...this.state.todos];
+		todos.splice(index, 1);
+		this.setState({
+			todos,
+		});
+	};
+
+	render() {
+		return (
+			<div className="App">
+				<div className="container text-center">
+					<h1 className="display-3">TODO APP</h1>
+					<Form
+						onInputChange={this.onInputChange}
+						newTodo={this.state.newTodo}
+						onFormSubmit={this.onFormSubmit}
+					/>
+				</div>
+				<TodoList
+					onChechboxChange={this.onChechboxChange}
+					onRemoveClick={this.onRemoveClick}
+					todos={this.state.todos}
+				/>
+			</div>
+		);
+	}
 }
 
 export default App;
